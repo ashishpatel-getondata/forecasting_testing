@@ -77,13 +77,13 @@ if uploaded_file is not None:
             st.subheader("Forecasted Data")
             st.dataframe(forecast_df)
 
-            train = ts_data[:-forecast_period]
-            test = ts_data[-forecast_period:]
-            metrics_model= ExponentialSmoothing(train, seasonal_periods=12, trend='add', seasonal='add')
+            metrics_train = ts_data[:-forecast_period]
+            metrics_test = ts_data[-forecast_period:]
+            metrics_model= ExponentialSmoothing(metrics_train, seasonal_periods=12, trend='add', seasonal='add')
             metrics_model_fit = metrics_model_fit.fit()
             metrics_forecast = metrics_model_fit.forecast(forecast_period) 
 
-            mae, rmse, mape = get_metrics(test, forecast)
+            mae, rmse, mape = get_metrics(test, metrics_forecast)
             st.write(f"**Mean Absolute Error (MAE)**: {mae:.2f}")
             st.write(f"**Root Mean Squared Error (RMSE)**: {rmse:.2f}")
             st.write(f"**Mean Absolute Percentage Error (MAPE)**: {mape:.2f}%")
