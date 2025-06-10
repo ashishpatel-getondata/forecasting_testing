@@ -39,7 +39,7 @@ if uploaded_file is not None:
         date_col = st.selectbox("Select Date Column", df.columns)
         value_col = st.selectbox("Select Value Column (to forecast)", df.columns)
         model_choice = st.radio("Choose Forecasting Model", (
-            "Exponential Smoothing", "SARIMA", "Seasonal Decomposition", "Moving Average"))
+            "Exponential Smoothing", "SARIMA", "Moving Average", "Seasonal Decomposition"))
         forecast_period = st.number_input("Number of periods to forecast", min_value=1, value=12)
 
         ma_window = None
