@@ -83,7 +83,7 @@ if uploaded_file is not None:
             metrics_model_fit = metrics_model.fit()
             metrics_forecast = metrics_model_fit.forecast(forecast_period)
 
-            mae, rmse, mape = get_metrics(test, metrics_forecast)
+            mae, rmse, mape = get_metrics(metrics_test, metrics_forecast)
             st.write(f"**Mean Absolute Error (MAE)**: {mae:.2f}")
             st.write(f"**Root Mean Squared Error (RMSE)**: {rmse:.2f}")
             st.write(f"**Mean Absolute Percentage Error (MAPE)**: {mape:.2f}%")
