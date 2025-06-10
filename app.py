@@ -110,6 +110,18 @@ if uploaded_file is not None:
             st.subheader("Forecasted Data")
             st.dataframe(forecast_df)
 
+            metrics_train = ts_data[:-forecast_period]
+            metrics_test = ts_data[-forecast_period:]
+            metrics_model = SARIMAX(metrics_train, order=(0, 1, 1), seasonal_order=(2, 1, 1, 12))
+            metrics_fit = metrics_model.fit()
+            metrics_forecast = metrics_fit.predict(start=len(metrics_train), end=(len(metrics_train) + forecast_period - 1))
+
+            st.subheader("Evaluation Metrics")
+            mae, rmse, mape = get_metrics(metrics_test, metrics_forecast)
+            st.write(f"**Mean Absolute Error (MAE)**: {mae:.2f}")
+            st.write(f"**Root Mean Squared Error (RMSE)**: {rmse:.2f}")
+            st.write(f"**Mean Absolute Percentage Error (MAPE)**: {mape:.2f}%")
+
         elif model_choice == "Seasonal Decomposition":
             result = seasonal_decompose(ts_data, model='multiplicative', period=12)
 
@@ -153,3 +165,15 @@ if uploaded_file is not None:
 
             st.subheader("Forecasted Data")
             st.dataframe(forecast_df)
+
+            metrics_train = ts_data[:-forecast_period]
+            metrics_test = ts_data[-forecast_period:]
+            rolling_train = metrics_train.rolling(window=ma_window).mean()
+            last_train_avg = rolling_train.dropna().iloc[-1]
+            metrics_forecast = pd.Series([last_train_avg] * forecast_period, index=metrics_test.index)
+
+            st.subheader("Evaluation Metrics")
+            mae, rmse, mape = get_metrics(metrics_test, metrics_forecast)
+            st.write(f"**Mean Absolute Error (MAE)**: {mae:.2f}")
+            st.write(f"**Root Mean Squared Error (RMSE)**: {rmse:.2f}")
+            st.write(f"**Mean Absolute Percentage Error (MAPE)**: {mape:.2f}%")
