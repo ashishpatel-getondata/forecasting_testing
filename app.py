@@ -4,6 +4,14 @@ import matplotlib.pyplot as plt
 from statsmodels.tsa.api import ExponentialSmoothing
 from statsmodels.tsa.statespace.sarimax import SARIMAX
 from statsmodels.tsa.seasonal import seasonal_decompose
+from sklearn.metrics import mean_absolute_error, mean_squared_error
+import numpy as np
+
+def get_metrics(y_true, y_pred):
+    mae = mean_absolute_error(y_true, y_pred)
+    rmse = np.sqrt(mean_squared_error(y_true, y_pred))
+    mape = np.mean(np.abs((y_true - y_pred) / y_true)) * 100
+    return mae, rmse, mape
 
 st.title("Forecasting Models")
 
@@ -68,6 +76,18 @@ if uploaded_file is not None:
 
             st.subheader("Forecasted Data")
             st.dataframe(forecast_df)
+
+            train = ts_data[:-forecast_period]
+            test = ts_data[-forecast_period:]
+            metrics_model= ExponentialSmoothing(train, seasonal_periods=12, trend='add', seasonal='add')
+            metrics_model_fit = metrics_model_fit.fit()
+            metrics_forecast = metrics_model_fit.forecast(forecast_period) 
+
+            mae, rmse, mape = get_metrics(test, forecast)
+            st.write(f"**Mean Absolute Error (MAE)**: {mae:.2f}")
+            st.write(f"**Root Mean Squared Error (RMSE)**: {rmse:.2f}")
+            st.write(f"**Mean Absolute Percentage Error (MAPE)**: {mape:.2f}%")
+
 
         elif model_choice == "SARIMA":
             fig, ax = plt.subplots(figsize=(10, 5))
