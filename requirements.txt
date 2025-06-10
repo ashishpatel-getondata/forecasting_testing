@@ -3,4 +3,4 @@ pandas
 matplotlib
 statsmodels
 numpy
-sklearn
+scikit-learn
