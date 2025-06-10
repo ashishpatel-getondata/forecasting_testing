@@ -21,8 +21,8 @@ st.markdown(
 
     - **Exponential Smoothing**: Forecast future values using triple exponential smoothing.
     - **SARIMA**: Generate forecasts with Seasonal ARIMA modeling.
-    - **Seasonal Decomposition**: Visualize the underlying trend, seasonal, and residual components of the data.
     - **Moving Average**: Forecast future values using a simple moving average of past periods.
+    - **Seasonal Decomposition**: Visualize the underlying trend, seasonal, and residual components of the data.
     """
 )
 
